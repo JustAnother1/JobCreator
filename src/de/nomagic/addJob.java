@@ -62,6 +62,10 @@ public class addJob
                     i++;
                     ServerPort = Integer.parseInt(args[i]);
                 }
+                else if(true == "-errors".equals(args[i]))
+                {
+                    printErrorMessages = true;
+                }
                 else if(true == "-requestId".equals(args[i]))
                 {
                     i++;
