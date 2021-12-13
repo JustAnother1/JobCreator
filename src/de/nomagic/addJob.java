@@ -21,6 +21,7 @@ public class addJob
     private BufferedReader inFromServer;
     private DataOutputStream outToServer;
     private boolean printErrorMessages = false;
+    private int result = 99;
 
     public addJob()
     {
@@ -88,7 +89,7 @@ public class addJob
                 else if(true == "-h".equals(args[i]))
                 {
                     printHelpText();
-                    System.exit(0);
+                    System.exit(2);
                 }
                 else
                 {
@@ -111,7 +112,7 @@ public class addJob
             {
                 System.err.println("Could not connect to Server !");
             }
-            System.exit(1);
+            System.exit(3);
         }
 
         JobInfo =  getJobInformation();
@@ -135,7 +136,12 @@ public class addJob
         addJob m = new addJob();
         m.getConfigFromCommandLine(args);
         m.doTheWork();
-        System.exit(0);
+        System.exit(m.getResult());
+    }
+
+    private int getResult()
+    {
+        return result;
     }
 
     public void disconnect()
@@ -174,6 +180,7 @@ public class addJob
                 if(rep.startsWith("2:0:"))
                 {
                     // OK
+                    result = 0;
                     return rep;
                 }
                 else if(rep.startsWith("2:3:"))
@@ -182,6 +189,7 @@ public class addJob
                     {
                         System.out.println("Server rejected the Job!");
                     }
+                    result = 4;
                     return "";
                 }
                 else if(rep.startsWith("2:2:"))
@@ -197,6 +205,7 @@ public class addJob
             {
                 e.printStackTrace();
             }
+            result = 5;
         }
         catch (InterruptedException e)
         {
@@ -205,7 +214,9 @@ public class addJob
             {
                 e.printStackTrace();
             }
+            result = 6;
         }
+        result = 7;
         return "";
     }
 
